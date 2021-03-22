@@ -13,4 +13,13 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+router.post("/", async function (req, res, next) {
+  try {
+    res.json(await list.create(req.body));
+  } catch (err) {
+    console.log("Error while posting list", err.message);
+    next(err);
+  }
+});
+
 module.exports = router;
