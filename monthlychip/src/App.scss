@@ -2,8 +2,12 @@ body {
   background-color: floralwhite;
 }
 .navBar-list {
-  h1 {
-    text-align: center;
-    color: brown;
+  .header {
+    background-color: currentColor;
+    padding: 2rem;
+    h1 {
+      text-align: center;
+      color: deepskyblue;
+    }
   }
 }

@@ -56,8 +56,8 @@ export default class MonthlyItemsList extends Component {
           </button>
           {this.state.open && (
             <div className="dropdown">
-              {items.map(function (item, key) {
-                return <li key={key}> {item}</li>;
+              {items.data.map(function (item, key) {
+                return <li key={key}> {item.itemName}</li>;
               })}
             </div>
           )}
