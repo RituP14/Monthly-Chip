@@ -15,9 +15,12 @@
     list-style-type: none;
     padding: 1.2rem;
   }
+  .col-md-6 {
+    display: inline-block;
+  }
 }
 .dropdown {
-  position: absolute;
+  position: absolute !important;
   top: 100%;
   left: 0;
   width: 300px;
