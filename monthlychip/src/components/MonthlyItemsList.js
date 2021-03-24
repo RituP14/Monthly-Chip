@@ -6,49 +6,54 @@ const API_URL = "http://localhost:3000/items";
 
 export default class MonthlyItemsList extends Component {
   container = React.createRef();
-  state = {
-    open: false,
-    items: [],
-    fields: {
-      name: "",
-      amount: "",
-      description: "",
-    },
-    errors: {
-      name: "",
-      amount: "",
-      description: "",
-    },
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      items: [],
+      value: "coconut",
+      fields: {
+        item_name: "",
+        item_amount: "",
+        description: "",
+      },
+      errors: {
+        item_name: "",
+        item_amount: "",
+        description: "",
+      },
+    };
+  }
 
   componentDidMount() {
-    document.addEventListener("mousedown", this.handleClickOutside);
     axios.get(`${API_URL}`).then((res) => {
       const items = res.data;
       this.setState({ items });
     });
   }
 
-  componentWillUnmount() {
-    document.removeEventListener("mousedown", this.handleClickOutside);
+  handleValidation() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+
+    //Name
+    if (!fields.description) {
+      formIsValid = false;
+      errors["description"] = "Cannot be empty";
+    }
+    this.setState({ errors: errors });
+    return formIsValid;
   }
 
-  handlButtonClick = () => {
-    this.setState((state) => {
-      return { open: !state.open };
-    });
-  };
-
-  handleClickOutside = (event) => {
-    if (
-      this.container.current &&
-      !this.container.current.contains(event.targer)
-    ) {
-      this.setState({
-        open: false,
-      });
+  contactSubmit(e) {
+    e.preventDefault();
+    if (this.handleValidation()) {
+      this.onSubmit();
+    } else {
+      alert("Form has errors.");
     }
-  };
+  }
 
   onChange(field, e) {
     let fields = this.state.fields;
@@ -65,8 +70,8 @@ export default class MonthlyItemsList extends Component {
       //access the results here....
       this.setState({
         fields: {
-          name: "",
-          amount: "",
+          item_name: "",
+          item_amount: "",
           description: "",
         },
       });
@@ -79,11 +84,14 @@ export default class MonthlyItemsList extends Component {
     const fields = this.state.fields;
     return (
       <div className="container m-4" ref={this.container}>
-        <form onSubmit={this.onSubmit.bind(this)}>
+        <form onSubmit={this.contactSubmit.bind(this)}>
           <div className="row mb-4">
             <div className="col-md-6 select-container">
               <label>Select Item</label>
-              <select>
+              <select
+                value={fields.item_name}
+                onChange={this.onChange.bind(this, "item_name")}
+              >
                 {items.data &&
                   items.data.map(function (item, key) {
                     return (
@@ -99,10 +107,10 @@ export default class MonthlyItemsList extends Component {
               <input
                 type="text"
                 className="form-control"
-                name="amount"
+                name="item_amount"
                 placeholder="Enter amount"
-                onChange={this.onChange.bind(this, "amount")}
-                value={fields.amount}
+                onChange={this.onChange.bind(this, "item_amount")}
+                value={fields.item_amount}
               />
             </div>
           </div>
