@@ -4,8 +4,8 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
 const indexRouter = require("./routes/index");
-const itemsRouter = require("./routes/itemList");
-
+const itemsRouter = require("./routes/items");
+const itemListRouter = require("./routes/itemList");
 const app = express();
 var cors = require("cors");
 
@@ -18,6 +18,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/items", itemsRouter);
+app.use("/itemList", itemListRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
