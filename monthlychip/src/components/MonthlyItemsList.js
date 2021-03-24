@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../scss/main.scss";
 import axios from "axios";
+import ItemList from "../components/ItemList";
 
 const API_URL = "http://localhost:3000/items";
 
@@ -75,7 +76,7 @@ export default class MonthlyItemsList extends Component {
           description: "",
         },
       });
-      alert("you are successfully submitted the form!!");
+      // alert("you are successfully submitted the form!!");
     });
   };
 
@@ -89,6 +90,7 @@ export default class MonthlyItemsList extends Component {
             <div className="col-md-6 select-container">
               <label>Select Item</label>
               <select
+                className="custom-select"
                 value={fields.item_name}
                 onChange={this.onChange.bind(this, "item_name")}
               >
@@ -129,9 +131,14 @@ export default class MonthlyItemsList extends Component {
             <div className="col-md-6"></div>
           </div>
           <div className="col-md-6">
-            <button type="submit">Submit</button>
+            <button className="btn btn-primary" type="submit">
+              Submit
+            </button>
           </div>
         </form>
+        <div>
+          <ItemList></ItemList>
+        </div>
       </div>
     );
   }
