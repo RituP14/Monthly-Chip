@@ -16,6 +16,7 @@ export default class MonthlyItemsList extends Component {
     axios.get(`${API_URL}`).then((res) => {
       const itemList = res.data;
       this.setState({ itemList });
+      console.log(itemList);
     });
   }
 
@@ -29,6 +30,7 @@ export default class MonthlyItemsList extends Component {
               <th scope="col">Item Category</th>
               <th scope="col">Amount</th>
               <th scope="col">Description</th>
+              <th scope="col">Date</th>
             </tr>
           </thead>
           <tbody>
@@ -40,6 +42,7 @@ export default class MonthlyItemsList extends Component {
                   </td>
                   <td>{items.item_amount}</td>
                   <td>{items.description}</td>
+                  <td>{items.created_at}</td>
                 </tr>
               ))}
           </tbody>
