@@ -27,7 +27,9 @@ function validateCreate(itemList) {
   if (!itemList.description) {
     messages.push("Quote is empty");
   }
-
+  if (!itemList.date) {
+    messages.push("Quote is empty");
+  }
   if (itemList.item_name && itemList.item_name.length > 255) {
     messages.push("Quote cannot be longer than 255 characters");
   }
@@ -47,8 +49,13 @@ async function create(itemList) {
   validateCreate(itemList);
 
   const result = await db.query(
-    "INSERT INTO itemList(item_name,item_amount,description) VALUES(?,?,?)",
-    [itemList.item_name, itemList.item_amount, itemList.description]
+    "INSERT INTO itemList(item_name,item_amount,description,date) VALUES(?,?,?,?)",
+    [
+      itemList.item_name,
+      itemList.item_amount,
+      itemList.description,
+      itemList.date,
+    ]
   );
   let message = "Error in creating item";
 
@@ -59,7 +66,21 @@ async function create(itemList) {
   return { message };
 }
 
+async function deleteItem(item) {
+  const result = await db.query("DELETE FROM itemList WHERE item_name = ?", [
+    item.item_name,
+  ]);
+  let message = "Error in deleting item";
+
+  if (result.affectedRows) {
+    message = "Item deleted successfully";
+  }
+
+  return { message };
+}
+
 module.exports = {
   getMultiple,
   create,
+  deleteItem,
 };

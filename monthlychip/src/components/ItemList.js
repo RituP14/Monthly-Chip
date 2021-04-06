@@ -42,7 +42,7 @@ export default class MonthlyItemsList extends Component {
                   </td>
                   <td>{items.item_amount}</td>
                   <td>{items.description}</td>
-                  <td>{items.created_at}</td>
+                  <td>{items.date}</td>
                 </tr>
               ))}
           </tbody>

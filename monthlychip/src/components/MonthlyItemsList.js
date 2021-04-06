@@ -1,7 +1,11 @@
 import React, { Component } from "react";
+import DatePicker from "react-datepicker";
+import moment from "moment";
+
+import "react-datepicker/dist/react-datepicker.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "../scss/main.scss";
 import axios from "axios";
-import ItemList from "../components/ItemList";
 
 const API_URL = "http://localhost:3000/items";
 
@@ -17,6 +21,7 @@ export default class MonthlyItemsList extends Component {
         item_name: "",
         item_amount: "",
         description: "",
+        date: moment().toDate(),
       },
       errors: {
         item_name: "",
@@ -24,6 +29,7 @@ export default class MonthlyItemsList extends Component {
         description: "",
       },
     };
+    this.dateChanged = this.dateChanged.bind(this);
   }
 
   componentDidMount() {
@@ -52,21 +58,23 @@ export default class MonthlyItemsList extends Component {
     if (this.handleValidation()) {
       this.onSubmit();
     } else {
-      alert("Form has errors.");
+      alert("Please fill the form.");
     }
   }
 
-  onChange(field, e) {
+  onChange(field, e, date) {
     let fields = this.state.fields;
     fields[field] = e.target.value;
-    this.setState({ fields });
+    this.setState({ fields, startDate: date });
   }
 
-  onSubmit = (e) => {
+  dateChanged(date) {
+    this.setState({ date: date });
+  }
+  onSubmit = (e, date) => {
     // get our form data out of state
     const fields = this.state.fields;
     const body = fields;
-
     axios.post("http://localhost:3000/items", body).then((result) => {
       //access the results here....
       this.setState({
@@ -74,8 +82,10 @@ export default class MonthlyItemsList extends Component {
           item_name: "",
           item_amount: "",
           description: "",
+          date: date,
         },
       });
+      console.log("Hey", this.state.date);
       // alert("you are successfully submitted the form!!");
     });
   };
@@ -128,7 +138,15 @@ export default class MonthlyItemsList extends Component {
                 value={fields.description}
               />
             </div>
-            <div className="col-md-6"></div>
+            <div className="col-md-6">
+              <DatePicker
+                selected={this.state.date}
+                onChange={this.dateChanged}
+                value={fields.date}
+                placeholderText="Select date"
+                dateFormat="dd-MM-yyyy"
+              />
+            </div>
           </div>
           <div className="col-md-6">
             <button className="btn btn-primary" type="submit">
@@ -136,9 +154,6 @@ export default class MonthlyItemsList extends Component {
             </button>
           </div>
         </form>
-        <div>
-          <ItemList></ItemList>
-        </div>
       </div>
     );
   }
