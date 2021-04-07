@@ -4,7 +4,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3000/itemList";
 
-export default class MonthlyItemsList extends Component {
+export default class ItemsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,8 +15,19 @@ export default class MonthlyItemsList extends Component {
   componentDidMount() {
     axios.get(`${API_URL}`).then((res) => {
       const itemList = res.data;
+      itemList.data.map((item, index) => {
+        if (item.date) {
+          let newDate = new Date(item.date);
+          let final = `${
+            newDate.getMonth() + 1
+          } / ${newDate.getDate()} / ${newDate.getFullYear()}`;
+          item.date = final;
+          return item;
+        } else {
+          return item;
+        }
+      });
       this.setState({ itemList });
-      console.log(itemList);
     });
   }
 

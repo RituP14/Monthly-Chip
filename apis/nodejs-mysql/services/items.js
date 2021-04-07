@@ -1,4 +1,6 @@
+//const { delete } = require("../app");
 const db = require("./db");
+const { getItemList } = require("./itemList");
 
 async function getMultiple() {
   const data = await db.query("SELECT itemName from items");
@@ -66,21 +68,26 @@ async function create(itemList) {
   return { message };
 }
 
-async function deleteItem(item) {
-  const result = await db.query("DELETE FROM itemList WHERE item_name = ?", [
-    item.item_name,
-  ]);
-  let message = "Error in deleting item";
+// async function deleteItem(item) {
+//   var deleteItem = itemList["item" + req.params.item_id];
+//   delete itemList["item" + req.params.item_id];
+//   console.log(
+//     "After deletion item list :\n" + JSON.stringify(getItemList, null, 4)
+//   );
+//   res.end("After deletion item list :\n" + JSON.stringify(deleteItem, null, 4));
+// }
 
-  if (result.affectedRows) {
-    message = "Item deleted successfully";
-  }
-
-  return { message };
-}
+// exports.delete = function (req, res) {
+//   var deleteItem = itemList["item" + req.params.item_id];
+//   delete itemList["item" + req.params.item_id];
+//   console.log(
+//     "After deletion item list :\n" + JSON.stringify(getItemList, null, 4)
+//   );
+//   res.end("After deletion item list :\n" + JSON.stringify(deleteItem, null, 4));
+// };
 
 module.exports = {
   getMultiple,
   create,
-  deleteItem,
+  //deleteItem,
 };

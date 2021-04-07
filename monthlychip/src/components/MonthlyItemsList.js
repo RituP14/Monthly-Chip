@@ -17,11 +17,11 @@ export default class MonthlyItemsList extends Component {
       open: false,
       items: [],
       value: "coconut",
+      date: moment().toDate(),
       fields: {
         item_name: "",
         item_amount: "",
         description: "",
-        date: moment().toDate(),
       },
       errors: {
         item_name: "",
@@ -65,7 +65,7 @@ export default class MonthlyItemsList extends Component {
   onChange(field, e, date) {
     let fields = this.state.fields;
     fields[field] = e.target.value;
-    this.setState({ fields, startDate: date });
+    this.setState({ fields });
   }
 
   dateChanged(date) {
@@ -73,26 +73,32 @@ export default class MonthlyItemsList extends Component {
   }
   onSubmit = (e, date) => {
     // get our form data out of state
-    const fields = this.state.fields;
-    const body = fields;
+    const body = {
+      item_name: this.state.fields.item_name,
+      item_amount: this.state.fields.item_amount,
+      description: this.state.fields.description,
+      date: this.state.date,
+    };
+
+    this.setState({
+      date: date,
+      fields: {
+        item_name: "",
+        item_amount: "",
+        description: "",
+      },
+    });
+    console.log("Date", this.state);
     axios.post("http://localhost:3000/items", body).then((result) => {
       //access the results here....
-      this.setState({
-        fields: {
-          item_name: "",
-          item_amount: "",
-          description: "",
-          date: date,
-        },
-      });
-      console.log("Hey", this.state.date);
-      // alert("you are successfully submitted the form!!");
+      alert("you are successfully submitted the form!!");
     });
   };
 
   render() {
     const { items } = this.state;
     const fields = this.state.fields;
+
     return (
       <div className="container m-4" ref={this.container}>
         <form onSubmit={this.contactSubmit.bind(this)}>
@@ -142,7 +148,7 @@ export default class MonthlyItemsList extends Component {
               <DatePicker
                 selected={this.state.date}
                 onChange={this.dateChanged}
-                value={fields.date}
+                value={this.state.date}
                 placeholderText="Select date"
                 dateFormat="dd-MM-yyyy"
               />
