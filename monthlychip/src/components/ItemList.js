@@ -18,9 +18,9 @@ export default class ItemsList extends Component {
       itemList.data.map((item, index) => {
         if (item.date) {
           let newDate = new Date(item.date);
-          let final = `${
+          let final = `${newDate.getDate()} / ${
             newDate.getMonth() + 1
-          } / ${newDate.getDate()} / ${newDate.getFullYear()}`;
+          } / ${newDate.getFullYear()}`;
           item.date = final;
           return item;
         } else {
