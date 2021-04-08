@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "../scss/main.scss";
 import axios from "axios";
+import ReactTable from "react-table";
+import "react-table/react-table.css";
 
 const API_URL = "http://localhost:3000/itemList";
 
@@ -9,6 +11,7 @@ export default class ItemsList extends Component {
     super(props);
     this.state = {
       itemList: [],
+      loading: true,
     };
   }
 
@@ -27,15 +30,35 @@ export default class ItemsList extends Component {
           return item;
         }
       });
-      this.setState({ itemList });
+      this.setState({ itemList, loading: false });
     });
   }
 
   render() {
     const { itemList } = this.state;
+    const columns = [
+      {
+        Header: "Category",
+        accessor: "item_name",
+      },
+
+      {
+        Header: "Amount",
+        accessor: "item_amount",
+      },
+      {
+        Header: "Description",
+        accessor: "description",
+      },
+      {
+        Header: "Date",
+        accessor: "date",
+      },
+    ];
     return (
       <div className="container mt-4">
-        <table className="table table-bordered">
+        <ReactTable data={itemList.data} columns={columns} />
+        {/* <table className="table table-bordered">
           <thead className="thead-dark">
             <tr>
               <th scope="col">Item Category</th>
@@ -57,7 +80,7 @@ export default class ItemsList extends Component {
                 </tr>
               ))}
           </tbody>
-        </table>
+        </table> */}
       </div>
     );
   }
