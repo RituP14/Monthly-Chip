@@ -97,7 +97,10 @@ export default class MonthlyItemsList extends Component {
   render() {
     const { items } = this.state;
     const fields = this.state.fields;
-
+    const submitDisabled =
+      !this.state.fields.item_name ||
+      !this.state.fields.item_amount ||
+      !this.state.fields.description;
     return (
       <div className="container m-4" ref={this.container}>
         <form onSubmit={this.contactSubmit.bind(this)}>
@@ -137,6 +140,7 @@ export default class MonthlyItemsList extends Component {
               <input
                 type="text"
                 className="form-control"
+                id="description"
                 name="description"
                 placeholder="Enter description"
                 onChange={this.onChange.bind(this, "description")}
@@ -154,7 +158,11 @@ export default class MonthlyItemsList extends Component {
             </div>
           </div>
           <div className="col-md-6">
-            <button className="btn btn-primary" type="submit">
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={submitDisabled}
+            >
               Submit
             </button>
           </div>
