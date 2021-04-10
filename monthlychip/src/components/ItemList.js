@@ -3,6 +3,7 @@ import "../scss/main.scss";
 import axios from "axios";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import { Input } from "semantic-ui-react";
 
 const API_URL = "http://localhost:3000/itemList";
 
@@ -11,11 +12,13 @@ export default class ItemsList extends Component {
     super(props);
     this.state = {
       itemList: [],
-      loading: true,
+      filteredData: [],
+      columns: [],
+      //searchInput: "",
     };
   }
 
-  componentDidMount() {
+  getData() {
     axios.get(`${API_URL}`).then((res) => {
       const itemList = res.data;
       itemList.data.map((item, index) => {
@@ -30,10 +33,33 @@ export default class ItemsList extends Component {
           return item;
         }
       });
-      this.setState({ itemList, loading: false });
+      this.setState({ itemList });
     });
   }
-
+  componentDidMount() {
+    this.getData();
+  }
+  handleChange = (event) => {
+    let searchInput = event.target.value;
+    this.globalSearch(searchInput);
+  };
+  globalSearch = (searchInput) => {
+    let { itemList } = this.state;
+    //console.log("Heyyy hiiii", this.state.itemList);
+    if (searchInput) {
+      let filteredData = itemList.data.filter((value) => {
+        return value.item_name
+          .toLowerCase()
+          .includes(searchInput.toLowerCase());
+      });
+      let itemListNew = {
+        data: filteredData,
+      };
+      this.setState({ itemList: itemListNew });
+    } else {
+      this.getData();
+    }
+  };
   render() {
     const { itemList } = this.state;
     const columns = [
@@ -56,32 +82,22 @@ export default class ItemsList extends Component {
       },
     ];
     return (
-      <div className="container mt-4">
-        <ReactTable data={itemList.data} columns={columns} />
-        {/* <table className="table table-bordered">
-          <thead className="thead-dark">
-            <tr>
-              <th scope="col">Item Category</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Description</th>
-              <th scope="col">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {itemList.data &&
-              itemList.data.map((items, index) => (
-                <tr key={index}>
-                  <td scope="row" key={index}>
-                    {items.item_name}
-                  </td>
-                  <td>{items.item_amount}</td>
-                  <td>{items.description}</td>
-                  <td>{items.date}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table> */}
-      </div>
+      <form>
+        <Input
+          className="m-4"
+          size="large"
+          name="searchInput"
+          ref={(input) => (this.search = input)}
+          onChange={this.handleChange}
+          label="Search"
+        />
+        <ReactTable
+          className="mx-auto w-75 -striped -highlight"
+          data={itemList.data}
+          columns={columns}
+          defaultPageSize={10}
+        />
+      </form>
     );
   }
 }

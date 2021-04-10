@@ -41,3 +41,7 @@
     cursor: pointer;
   }
 }
+.ReactTable .rt-thead .rt-tr,
+.ReactTable .rt-tbody {
+  padding: 1rem;
+}

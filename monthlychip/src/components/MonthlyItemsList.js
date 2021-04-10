@@ -88,7 +88,6 @@ export default class MonthlyItemsList extends Component {
         description: "",
       },
     });
-    console.log("Date", this.state);
     axios.post("http://localhost:3000/items", body).then((result) => {
       //access the results here....
       alert("you are successfully submitted the form!!");
