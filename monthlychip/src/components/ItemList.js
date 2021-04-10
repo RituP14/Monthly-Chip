@@ -3,7 +3,6 @@ import "../scss/main.scss";
 import axios from "axios";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import { Input } from "semantic-ui-react";
 
 const API_URL = "http://localhost:3000/itemList";
 
@@ -82,13 +81,14 @@ export default class ItemsList extends Component {
     ];
     return (
       <form>
-        <Input
-          className="m-4"
+        <input
+          className="m-4 p-2"
           size="large"
           name="searchInput"
           ref={(input) => (this.search = input)}
           onChange={this.handleChange}
           label="Search"
+          placeholder="Seach here"
         />
         <ReactTable
           className="mx-auto w-75 -striped -highlight"
