@@ -14,7 +14,6 @@ export default class ItemsList extends Component {
       itemList: [],
       filteredData: [],
       columns: [],
-      //searchInput: "",
     };
   }
 
